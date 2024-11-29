@@ -1,0 +1,35 @@
+version: "3.4"
+
+services:
+  db:
+    image: postgres:13-alpine
+    platform: linux/amd64
+    container_name: db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+  create_db:
+    image: postgres:13-alpine
+    platform: linux/amd64
+    command: ["sh", "-c", "psql -h db -U ${DB_USER} -d postgres -c 'CREATE DATABASE ${DB_NAME};'"]
+    environment:
+      PGPASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - db
+    restart: "no"
+  flyway:
+    image: flyway/flyway
+    container_name: flyway-local
+    platform: linux/amd64
+    command:  migrate -url=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME} -user=${DB_USER} -password=${DB_PASSWORD} -locations=filesystem:/flyway/sql
+    volumes:
+      - ./local-setup/sql:/flyway/sql
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}

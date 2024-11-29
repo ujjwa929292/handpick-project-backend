@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TheHandpickAppApplication<thehandpickapp>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.handpick.thehandpickapp.TheHandpickAppApplication",
+            "projectName": "thehandpickapp",
+            "args": "",
+            "env": {
+                "DB_HOST": "localhost",
+                "DB_PORT": "5432",
+                "DB_NAME": "handpickdb",
+                "DB_USER": "user",
+                "DB_PASSWORD": "P@ssw0rd",
+                "ALLOWED_ORIGINS": "http://localhost:3000"
+            },
+        }
+    ]
+}
